@@ -1,0 +1,96 @@
+.mx_grid_tools {
+    display: flex;
+    padding: 0 20px;
+    max-height: 125px;
+    height: 125px;
+    background-image: linear-gradient(45deg, var(--mx-color-tertiary), var(--mx-color-primary));
+    box-shadow: inset 0 0 8px 2px #00000081;
+    overflow: hidden;
+    transition: all 0.35s ease-in-out;
+}
+
+.mx_grid_tools p {
+    margin: 0;
+    padding: 0;
+}
+
+.mx_grid_tools > div {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    gap: 10px;
+}
+
+.mx_grid_tools > div > div {
+    display: flex;
+    gap: 5px;
+    margin: auto;
+}
+
+.mx_grid_tools > div > div > div {
+    width: 60px;
+    text-align: center;
+}
+
+.mx_grid_tools > div > div > div > div {
+    margin: 0 auto;
+}
+
+.mx_grid_tools strong {
+    text-align: center;
+}
+
+.mx_grid {
+    display: grid;
+    gap: 3px;
+
+    margin: auto;
+}
+
+.mx_grid_row {
+    display: flex;
+    margin: auto;
+    gap: 3px;
+}
+
+.mx_node {
+    font-size: 0.7rem;
+    background-color: var(--mx-node-empty);
+    box-shadow: inset 0 0 3px 1px #00000081, 0 0 0px 0px #00000081;
+    transition: all 0.5s ease-in-out;
+}
+.mx_node_start {
+    background-color: var(--mx-node-start);
+}
+.mx_node_final {
+    background-color: var(--mx-node-final);
+}
+.mx_node_wall {
+    background-color: var(--mx-node-wall);
+}
+.mx_node_weight {
+    background-color: var(--mx-node-weight);
+}
+.mx_node_visited {
+    background-color: var(--mx-node-visited);
+}
+.mx_node_closest {
+    background-color: var(--mx-node-closest);
+}
+
+.mx_node_glow_start {
+    border: 1px solid rgba(99, 99, 99, 0.308);
+    box-shadow: inset 0 0 3px 1px #00000081, 0 0 12px 5px var(--mx-node-start);
+}
+.mx_node_glow_final {
+    border: 1px solid rgba(99, 99, 99, 0.308);
+    box-shadow: inset 0 0 3px 1px #00000081, 0 0 12px 5px var(--mx-node-final);
+}
+.mx_node_glow_wall {
+    border: 1px solid rgba(99, 99, 99, 0.308);
+    box-shadow: inset 0 0 3px 1px #00000081, 0 0 12px 5px var(--mx-node-wall);
+}
+.mx_node_glow_weight {
+    border: 1px solid rgba(99, 99, 99, 0.308);
+    box-shadow: inset 0 0 3px 1px #00000081, 0 0 12px 5px var(--mx-node-weight);
+}

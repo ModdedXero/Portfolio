@@ -1,0 +1,113 @@
+.mx_navbar {
+    position: sticky;
+    top: 0;
+    padding: 20px 0;
+
+    color: white;
+    background-color: var(--mx-color-tertiary);
+    box-shadow: 0 0 3px 1px #00000081;
+    z-index: 100;
+}
+
+.mx_navbar_container {
+    list-style: none;
+    display: flex;
+    flex-flow: row;
+    gap: 50px;
+    margin: 0;
+    padding: 0 60px;
+}
+
+.mx_navbar_title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.mx_navbar_button {
+    color: white;
+    outline: none;
+    border: none;
+
+    background-color: var(--mx-color-secondary);
+    box-shadow: 0 0 3px 1px #00000081;
+    cursor: pointer;
+
+    transition: all 0.15s ease-in-out;
+}
+.mx_navbar_button:hover {
+    background-color: var(--mx-color-primary);
+}
+.mx_navbar_button:active {
+    transform: scale(0.9, 0.9);
+}
+
+.mx_navbar_group,
+.mx_navbar_group_right,
+.mx_navbar_group_center {
+    display: flex;
+    gap: 20px;
+}
+.mx_navbar_group_right {
+    margin-left: auto;
+}
+.mx_navbar_group_center {
+    margin: 0 auto;
+}
+
+.mx_navbar_dropdown,
+.mx_navbar_dropdown_active {
+    position: relative;
+    display: inline-block;
+    margin: auto 0;
+}
+
+.mx_navbar_dropdown button,
+.mx_navbar_dropdown_active button {
+    background-color: transparent;
+    color: white;
+    font-size: 1.05rem;
+    border: none;
+    cursor: pointer;
+}
+.mx_navbar_dropdown button:hover,
+.mx_navbar_dropdown_active button:hover {
+    color: var(--mx-color-primary);
+}
+
+.mx_navbar_dropdown div,
+.mx_navbar_dropdown_active div {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    z-index: 100;
+    height: auto;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+
+    background-color: var(--mx-color-tertiary);
+
+    transition: all 0.35s ease-in-out;
+}
+.mx_navbar_dropdown_active div {
+    max-height: 150px;
+    box-shadow: 0 0 3px 1px #00000081;
+}
+
+.mx_navbar_dropdown div button,
+.mx_navbar_dropdown_active div button {
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    transition: all 0.25s ease-in-out;
+}
+.mx_navbar_dropdown_active div button:hover {
+    margin-left: 10px;
+    border-left: 3px solid white;
+}
+
+.mx_navbar_link {
+    margin: auto 0;
+}

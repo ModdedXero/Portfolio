@@ -1,0 +1,14 @@
+.mx_slider {
+    display: flex;
+    margin: auto 0;
+    gap: 10px;
+}
+
+.mx_slider label {
+    margin: auto 0;
+}
+
+.mx_slider input {
+    margin: 0;
+    margin-top: auto;
+}
