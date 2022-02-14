@@ -1,4 +1,4 @@
-import "../../styles/slider.module.css";
+import "../../styles/slider.css";
 
 export default function Slider({ label, reverse=false, ...props }) {
     return (

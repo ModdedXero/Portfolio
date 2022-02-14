@@ -142,7 +142,7 @@ export default function Sorting(): JSX.Element {
                         Reset Array
                     </NavLink>
                     <Slider label="Size" min="50" max="300" defaultValue="200" onChange={e => updateArraySize(e)} />
-                    <Slider label="Speed" reverse min="50" max="300" defaultValue="200" onChange={e => setAnimationSpeed(e.target.value)} />
+                    <Slider label="Speed" reverse min="50" max="300" defaultValue="50" onChange={e => setAnimationSpeed(e.target.value)} />
                 </NavGroup>
             </Navbar>
             <div className="mx_chart">
