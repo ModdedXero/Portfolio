@@ -1,0 +1,26 @@
+.mx_snake {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.mx_snake_grid {
+    display: grid;
+    grid-template-columns: repeat(20, 32px);
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+    gap: 3px;
+    padding: 3px;
+
+    box-shadow: 0 0 3px 1px #00000081;
+}
+
+.mx_snake_node {
+    width: 32px;
+    height: 32px;
+
+    background-color: var(--mx-node-empty);
+    box-shadow: inset 0 0 3px 1px #00000081;
+}

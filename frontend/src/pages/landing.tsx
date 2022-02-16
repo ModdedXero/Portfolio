@@ -27,6 +27,9 @@ export default function Landing({}): JSX.Element {
                         <NavLink href="/sorting">
                             Sorting
                         </NavLink>
+                        <NavLink href="/snake">
+                            Snake
+                        </NavLink>
                     </NavGroup>
                 </Navbar>
                 <div className="mx_landing_bio">
