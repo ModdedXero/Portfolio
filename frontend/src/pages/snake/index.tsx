@@ -7,7 +7,7 @@ import Node from "../../components/snake/node";
 import "../../styles/snake.css";
 
 export default function Snake() {
-    const [playerPos, setPlayerPos] = useState({ row: 17, col: 10 });
+    const [playerPos, setPlayerPos] = useState({ row: 14, col: 10 });
     const [playerDir, setPlayerDir] = useState("s");
     const [playerChildren, setPlayerChildren] = useState([]);
 
