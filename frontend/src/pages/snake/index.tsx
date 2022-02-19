@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Children, useEffect, useState } from "react";
 
 import { Navbar, NavButton, NavDropdown, NavGroup, NavLink, NavTitle } from "../../components/utility/navbar";
 import useKeyPress from "../../components/hooks/useKeyPress";
@@ -9,10 +9,13 @@ import "../../styles/snake.css";
 export default function Snake() {
     const [playerPos, setPlayerPos] = useState({ row: 14, col: 10 });
     const [playerDir, setPlayerDir] = useState("s");
-    const [playerChildren, setPlayerChildren] = useState([]);
+    const [playerChildren, setPlayerChildren] = useState([{ row: 14, col: 10 }]);
 
+    const [gameState, setGameState] = useState(1);
     const [foodPos, setFoodPos] = useState({ row: 3, col: 10 });
     const [grid, setGrid] = useState(getInitialGrid(playerPos, foodPos));
+
+    const [update, setUpdate] = useState(null);
 
     const wPress = useKeyPress("w", updateDirection);
     const aPress = useKeyPress("a", updateDirection);
@@ -20,12 +23,25 @@ export default function Snake() {
     const dPress = useKeyPress("d", updateDirection);
 
     useEffect(() => {
-        const update = setInterval(() => { onUpdate(); }, 250);
+        setUpdate(setInterval(() => { onUpdate(); }, 250));
         return () => clearInterval(update);
     }, [])
 
+    function GameOver() {
+        setUpdate(() => { return null; });
+        setGameState(() => { return 0; });
+        console.log("Game Over");
+    }
+
     function onUpdate() {
-        movePlayer();
+        setGameState(previous => {
+            if (previous !== 1) return previous;
+
+            movePlayer();
+            moveChildren();
+
+            return previous;
+        })
     }
 
     function movePlayer() {
@@ -73,31 +89,42 @@ export default function Snake() {
             })
 
             checkFood(playerPos);
+            
+            return playerPos;
+        })
+    }
 
+    function moveChildren() {
+        setPlayerPos(player => {
             setPlayerChildren(children => {
                 if (children.length <= 0) return children;
 
-                const newChildren = JSON.parse(JSON.stringify(children))
-
-                grid[newChildren[newChildren.length - 1].row][newChildren[newChildren.length - 1].col] = 0;
+                const newChildren = JSON.parse(JSON.stringify(children));
+                grid[children.at(-1).row][children.at(-1).col] = 0;
+                
                 for (let i = newChildren.length - 1; i >= 0; i--) {
-                    
                     if (i === 0) {
-                        newChildren[i].row = previous.row;
-                        newChildren[i].col = previous.col;
-                        grid[previous.row][previous.col] = 2;
-                    } else {
-                        console.log(newChildren)
-                        newChildren[i].row = newChildren[i - 1].row;
-                        newChildren[i].col = newChildren[i - 1].col;
+                        newChildren[i].row = player.row;
+                        newChildren[i].col = player.col;
                         grid[newChildren[i].row][newChildren[i].col] = 2;
+                        break;
+                    }
+                    
+                    newChildren[i].row = newChildren[i - 1].row;
+                    newChildren[i].col = newChildren[i - 1].col;
+                    grid[newChildren[i].row][newChildren[i].col] = 2;
+
+                    if (newChildren[i].row === player.row &&
+                        newChildren[i].col === player.col &&
+                        i !== newChildren.length - 1) {
+                            GameOver();
+                            break;
                     }
                 }
-
+                
                 return newChildren;
             })
-            
-            return playerPos;
+            return player;
         })
     }
 
@@ -113,9 +140,8 @@ export default function Snake() {
                 newFood.col = col;
 
                 setPlayerChildren(children => {
-                    const newChildren = [...children];
-                    newChildren.push(player)
-                    return newChildren;
+                    children.push(player);
+                    return children;
                 })
             }
 
