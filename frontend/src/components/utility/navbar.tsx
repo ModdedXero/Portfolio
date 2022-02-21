@@ -5,7 +5,7 @@ import "../../styles/navbar.css";
 
 export function Navbar({ children, zIndex=1000, top=0 }) {
     const [sticky, setSticky] = useState();
-    const navRef = useRef();
+    const navRef = useRef(null);
 
     useEffect(() => {
         setSticky(top || navRef.current.getBoundingClientRect().top);
@@ -76,7 +76,7 @@ export function NavDropdown({ label, children }) {
 
 export function NavLink({ href="", children, onClick=null, disabled=false, ...props}) {
     return (
-        <div key={disabled + Math.random()} className="mx_navbar_link" onClick={_ => disabled ? null : onClick()} {...props}>
+        <div key={disabled + `${Math.random()}`} className="mx_navbar_link" onClick={_ => disabled ? null : onClick()} {...props}>
             <Link to={href ? href : ""}>{children}</Link>
         </div>
     )
