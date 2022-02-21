@@ -1,4 +1,4 @@
-import { Children, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Navbar, NavButton, NavDropdown, NavGroup, NavLink, NavTitle } from "../../components/utility/navbar";
 import useKeyPress from "../../components/hooks/useKeyPress";
@@ -6,14 +6,17 @@ import Node from "../../components/snake/node";
 
 import "../../styles/snake.css";
 
-export default function Snake() {
-    const [playerPos, setPlayerPos] = useState({ row: 14, col: 10 });
-    const [playerDir, setPlayerDir] = useState("s");
-    const [playerChildren, setPlayerChildren] = useState([{ row: 14, col: 10 }]);
+const PLAYER_START = {row: 14, col: 10};
+const FOOD_START = {row: 3, col: 10};
 
-    const [gameState, setGameState] = useState(1);
-    const [foodPos, setFoodPos] = useState({ row: 3, col: 10 });
-    const [grid, setGrid] = useState(getInitialGrid(playerPos, foodPos));
+export default function Snake() {
+    const [playerPos, setPlayerPos] = useState(PLAYER_START);
+    const [playerDir, setPlayerDir] = useState("w");
+    const [playerChildren, setPlayerChildren] = useState([PLAYER_START]);
+
+    const [gameState, setGameState] = useState(0);
+    const [foodPos, setFoodPos] = useState(FOOD_START);
+    const [grid, setGrid] = useState(getInitialGrid());
 
     const [update, setUpdate] = useState(null);
 
@@ -23,9 +26,38 @@ export default function Snake() {
     const dPress = useKeyPress("d", updateDirection);
 
     useEffect(() => {
-        setUpdate(setInterval(() => { onUpdate(); }, 250));
+        setUpdate(setInterval(() => { onUpdate(); }, 125));
         return () => clearInterval(update);
     }, [])
+
+    function onStart() {
+        setGameState(() => { return 1; });
+    }
+
+    function onReset() {
+        setGrid(previous => {
+            const newGrid = [...previous];
+
+            for (let row = 0; row < newGrid.length; row++) {
+                for (let col = 0; col < newGrid[row].length; col++) {
+                    if (PLAYER_START.row === row && PLAYER_START.col === col) {
+                        newGrid[row][col] = 2;
+                    } else if (FOOD_START.row === row && FOOD_START.col === col) {
+                        newGrid[row][col] = 1;
+                    } else {
+                        newGrid[row][col] = 0;
+                    }
+                }
+            }
+
+            return newGrid;
+        });
+        setPlayerPos(() => { return PLAYER_START; });
+        setFoodPos(() => { return FOOD_START; });
+        setPlayerChildren(() => { return [PLAYER_START]; });
+        setPlayerDir(() => { return "w"; });
+        setGameState(() => { return 0; });
+    }
 
     function GameOver() {
         setUpdate(() => { return null; });
@@ -181,7 +213,8 @@ export default function Snake() {
                     </NavTitle>
                 </NavGroup>
                 <NavGroup>
-
+                    <NavButton onClick={onStart}>Start</NavButton>
+                    <NavButton onClick={onReset}>Reset</NavButton>
                 </NavGroup>
             </Navbar>
             <div className="mx_snake">
@@ -202,18 +235,15 @@ export default function Snake() {
     )
 }
 
-function getInitialGrid(
-    playerPos: {row: number, col: number}, 
-    foodPos: {row: number, col: number}
-): number[][] {
+function getInitialGrid(): number[][] {
     const grid = [];
 
     for (let row = 0; row < 20; row++) {
         const rowArray = [];
         for (let col = 0; col < 20; col++) {
-            if (playerPos.row === row && playerPos.col === col) {
+            if (PLAYER_START.row === row && PLAYER_START.col === col) {
                 rowArray.push(2);
-            } else if (foodPos.row === row && foodPos.col === col) {
+            } else if (FOOD_START.row === row && FOOD_START.col === col) {
                 rowArray.push(1);
             } else {
                 rowArray.push(0);
