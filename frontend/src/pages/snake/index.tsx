@@ -5,6 +5,7 @@ import useKeyPress from "../../components/hooks/useKeyPress";
 import Node from "../../components/snake/node";
 
 import "../../styles/snake.css";
+import { ModalItem, ModalList } from "../../components/utility/modal";
 
 const PLAYER_START = {row: 14, col: 10};
 const FOOD_START = {row: 3, col: 10};
@@ -217,6 +218,14 @@ export default function Snake() {
                     <NavButton onClick={onReset}>Reset</NavButton>
                 </NavGroup>
             </Navbar>
+            <ModalList>
+                <ModalItem>
+                    Test
+                </ModalItem>
+                <ModalItem>
+                    Test2
+                </ModalItem>
+            </ModalList>
             <div className="mx_snake">
                 <div className="mx_snake_grid">
                 {

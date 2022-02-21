@@ -6,20 +6,25 @@
     top: 0;
     bottom: 0;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
-    box-shadow: var(--mx-blur-shadow);
-    background: var(--mx-blur-bg-clear);
-    backdrop-filter: var(--mx-blur-filter);
 }
 
 @keyframes fadeIn {
     0% {opacity: 0;}
     100% {opacity: 1;}
+}
+
+.mx_modal_container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin: auto;
+    padding: 5px 8px;
 }
 
 .mx_modal_content {
@@ -29,16 +34,53 @@
     gap: 15px;
     width: fit-content;
     margin: auto;
-    padding: 45px 20px 20px 20px;
+    padding: 20px;
 
-    box-shadow: var(--mx-blur-shadow);
-    background: var(--mx-blur-bg);
-    backdrop-filter: var(--mx-blur-filter);
+    border: 2px solid var(--mx-color-secondary);
+    background-color: var(--mx-color-primary);
+    box-shadow: 0 0 10px #303030;
+
     animation: fadeIn 1s;
 }
 
-.mx_modal_content > button {
+.mx_modal_content_scroll {
+    width: 100%;
+}
+
+.mx_modal_scroll_left,
+.mx_modal_scroll_right {
+    padding: 0;
+    margin: 0 10px;
+
+    color: white;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+.mx_modal_scroll_left:hover,
+.mx_modal_scroll_right:hover {
+    color: var(--mx-color-tertiary);
+}
+
+.mx_modal_close {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    padding: 2px 5px;
+
+    border-radius: 20px;
+    color: white;
+    border: 1px solid var(--mx-color-tertiary);
+    outline: none;
+    background-color: var(--mx-color-secondary);
+    cursor: pointer;
+}
+.mx_modal_close:hover {
+    background-color: var(--mx-color-tertiary);
+}
+
+.mx_modal_item {
+    display: flex;
+    margin: auto;
 }
