@@ -218,14 +218,6 @@ export default function Snake() {
                     <NavButton onClick={onReset}>Reset</NavButton>
                 </NavGroup>
             </Navbar>
-            <ModalList>
-                <ModalItem>
-                    Test
-                </ModalItem>
-                <ModalItem>
-                    Test2
-                </ModalItem>
-            </ModalList>
             <div className="mx_snake">
                 <div className="mx_snake_grid">
                 {
