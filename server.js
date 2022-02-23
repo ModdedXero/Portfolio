@@ -9,6 +9,11 @@ const port = process.env.PORT || 5000;
 const server = http.createServer(app);
 exports.Socket = new Server(server);
 
+// Routes
+const snakeRouter = require("./api/snake").default;
+
+app.use("/api/snake", snakeRouter);
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "frontend", "build")));
 
