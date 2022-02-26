@@ -17,6 +17,9 @@ export default function Node(props: NodeProps) {
         case 2:
             backgroundColor = "#dd9a35";
             break;
+        case 3:
+            backgroundColor = "#99c24d" 
+            break;
         default:
             backgroundColor = "var(--mx-node-empty)";
     }

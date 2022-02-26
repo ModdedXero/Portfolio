@@ -20,7 +20,7 @@ router.route("/room/join/:id").post(async (req, res) => {
 
     if (result) {
         Socket.emit(`snake-${id}-join`, `${username} has joined!`);
-        res.status(200).send("Room joined");
+        res.status(200).send(result);
     } else {
         res.status(204).send("Room is full or doesn't exist");
     }

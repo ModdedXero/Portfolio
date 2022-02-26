@@ -9,15 +9,17 @@ import { ModalItem, ModalList } from "../../components/utility/modal";
 import "../../styles/snake.css";
 
 export default function Snake() {
+    const [activeRoom, setActiveRoom] = useState(false);
     const [roomData, setRoomData] = useState(null);
     const currentDir = useRef("w");
 
     const usernameRef = useRef(null);
+    const roomIdRef = useRef(null);
 
     useEffect(() => {
         if (roomData) {
             const socket = io(`http://${window.location.hostname}:5000`);
-            socket.on(`snake-${roomData.id}-update`, data => {console.log(data); setRoomData(data)});
+            socket.on(`snake-${roomData.id}-update`, data => {setRoomData(data)});
 
             window.addEventListener("keydown", updateDirection);
     
@@ -25,10 +27,10 @@ export default function Snake() {
                 window.removeEventListener("keydown", updateDirection);
             }
         }
-    }, [roomData])
+    }, [activeRoom])
 
     async function updateDirection({ key }) {
-        if (!roomData || roomData.State !== 1 || currentDir.current === key) return;
+        if (!roomData || currentDir.current === key) return;
         let direction: string;
 
         switch (key) {
@@ -48,17 +50,23 @@ export default function Snake() {
                 direction = "";
         }
 
+        if (direction === "") return;
+
         currentDir.current = key;
         axios.post(`/api/snake/client/direction/${roomData.id}`, { direction,  username: usernameRef.current.value});
     }
 
     async function CreateRoom() {
-        const id = await axios.post("/api/snake/room/create", {username: usernameRef.current.value});
-        setRoomData(id.data);
+        const room = await axios.post("/api/snake/room/create", {username: usernameRef.current.value});
+        setRoomData(room.data);
+        setActiveRoom(true);
     }
 
     async function JoinRoom() {
-
+        const room = await axios.post(`/api/snake/room/join/${roomIdRef.current.value}`, { username: usernameRef.current.value });
+        console.log(room.data)
+        setRoomData(room.data);
+        setActiveRoom(true);
     }
 
     async function StartGame() {
@@ -80,8 +88,16 @@ export default function Snake() {
                     <input ref={usernameRef} disabled={roomData !== null}/>
                 </NavGroup>
                 <NavGroup>
-                    <NavButton onClick={CreateRoom}>Create Room</NavButton>
+                    <NavButton onClick={CreateRoom} disabled={roomData !== null}>Create Room</NavButton>
                     <NavButton onClick={StartGame}>Start</NavButton>
+                </NavGroup>
+                <NavGroup>
+                    <label>Room ID</label>
+                    <input ref={roomIdRef} disabled={roomData !== null}/>
+                    <NavButton onClick={JoinRoom} disabled={roomData !== null}>Join Room</NavButton>
+                </NavGroup>
+                <NavGroup align="right">
+                    {roomData && roomData.id}
                 </NavGroup>
             </Navbar>
             <div className="mx_snake">
