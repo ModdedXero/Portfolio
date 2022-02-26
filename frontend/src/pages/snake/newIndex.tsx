@@ -1,45 +1,68 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
 
 import { Navbar, NavButton, NavDropdown, NavGroup, NavLink, NavTitle } from "../../components/utility/navbar";
-import useKeyPress from "../../components/hooks/useKeyPress";
 import Node from "../../components/snake/node";
 import { ModalItem, ModalList } from "../../components/utility/modal";
 
 import "../../styles/snake.css";
 
 export default function Snake() {
-    const [roomId, setRoomId] = useState("");
     const [roomData, setRoomData] = useState(null);
+    const currentDir = useRef("w");
+
+    const usernameRef = useRef(null);
 
     useEffect(() => {
-        if (roomId) {
+        if (roomData) {
             const socket = io(`http://${window.location.hostname}:5000`);
-            socket.on(`snake-${roomId}-update`, data => setRoomData(data));
+            socket.on(`snake-${roomData.id}-update`, data => {console.log(data); setRoomData(data)});
+
+            window.addEventListener("keydown", updateDirection);
+    
+            return () => {
+                window.removeEventListener("keydown", updateDirection);
+            }
         }
-    }, [roomId])
+    }, [roomData])
 
-    // const wPress = useKeyPress("w", updateDirection);
-    // const aPress = useKeyPress("a", updateDirection);
-    // const sPress = useKeyPress("s", updateDirection);
-    // const dPress = useKeyPress("d", updateDirection);
+    async function updateDirection({ key }) {
+        if (!roomData || roomData.State !== 1 || currentDir.current === key) return;
+        let direction: string;
 
-    // function updateDirection(dir: string) {
-    //     setPlayerDir(() => {
-    //         return dir;
-    //     })
-    // }
+        switch (key) {
+            case "w":
+                direction = "up";
+                break;
+            case "s":
+                direction = "down";
+                break;
+            case "a":
+                direction = "left";
+                break;
+            case "d":
+                direction = "right";
+                break;
+            default:
+                direction = "";
+        }
+
+        currentDir.current = key;
+        axios.post(`/api/snake/client/direction/${roomData.id}`, { direction,  username: usernameRef.current.value});
+    }
 
     async function CreateRoom() {
-        const id = await axios.post("/api/snake/room/create", {username: "Mythidas"});
-        setRoomId(id.data.id);
+        const id = await axios.post("/api/snake/room/create", {username: usernameRef.current.value});
         setRoomData(id.data);
-        console.log(id.data)
+    }
+
+    async function JoinRoom() {
+
     }
 
     async function StartGame() {
-        await axios.post(`/api/snake/room/start/${roomId}`);
+        await axios.post(`/api/snake/room/start/${roomData.id}`);
     }
 
     return (
@@ -48,9 +71,13 @@ export default function Snake() {
                 <NavGroup>
                     <NavTitle>
                         <NavLink href="/">
-                            Sorting
+                            Snake
                         </NavLink>
                     </NavTitle>
+                </NavGroup>
+                <NavGroup>
+                    <label>Username</label>
+                    <input ref={usernameRef} disabled={roomData !== null}/>
                 </NavGroup>
                 <NavGroup>
                     <NavButton onClick={CreateRoom}>Create Room</NavButton>
